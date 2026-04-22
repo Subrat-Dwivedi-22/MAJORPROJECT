@@ -27,21 +27,31 @@ if (!process.env.SESSION_SECRET) {
 
 const mongoURL = process.env.MONGO_URL;
 
-main()
-  .then(async () => {
-    console.log("Connection Successful");
-    await initDB();
-    const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
-    });
-  })
-  .catch((err) => console.log(err));
+let isReady = false;
 
-async function main() {
-  await mongoose.connect(mongoURL);
+// Start server immediately
+
+// Connect to Mongo separately
+async function connectDB() {
+  while (true) {
+    try {
+      await mongoose.connect(mongoURL);
+      console.log("Mongo connected");
+
+      await initDB();
+
+      isReady = true; // ✅ IMPORTANT
+      break;
+    } catch (err) {
+      console.log("Mongo not ready, retrying in 5s...");
+      await new Promise(res => setTimeout(res, 5000));
+    }
+  }
 }
+
+connectDB();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -81,6 +91,14 @@ app.get("/", (req, res) => {
   res.send("app is working");
 });
 
+
+
+app.get("/health", (req, res) => {
+  if (isReady) {
+    return res.status(200).send("OK");
+  }
+  return res.status(503).send("NOT READY");
+});
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", usersRouter);
@@ -93,3 +111,8 @@ app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("error.ejs", { err });
 });
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+
