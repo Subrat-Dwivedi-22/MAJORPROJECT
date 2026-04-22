@@ -31,9 +31,7 @@ const PORT = process.env.PORT || 8080;
 
 let isReady = false;
 
-// Start server immediately
 
-// Connect to Mongo separately
 async function connectDB() {
   while (true) {
     try {
