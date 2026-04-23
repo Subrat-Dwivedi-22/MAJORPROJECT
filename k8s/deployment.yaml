@@ -20,6 +20,11 @@ spec:
           envFrom:
             - secretRef:
                 name: app-secret
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "300m"
           readinessProbe:
             httpGet:
               path: /health
