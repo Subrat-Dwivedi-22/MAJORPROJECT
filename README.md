@@ -2,12 +2,13 @@
 
 ## 📌 Overview
 
-This project demonstrates a complete production-style workflow:
+This project demonstrates a complete **production-style DevOps workflow**:
 
-- Dockerized Node.js application
+- Containerized Node.js application
 - CI/CD pipeline using GitHub Actions
 - Image storage using AWS ECR
 - Deployment on AWS EKS (Kubernetes)
+- Rolling updates with zero downtime
 - Horizontal Pod Autoscaling (HPA)
 
 ---
@@ -15,7 +16,7 @@ This project demonstrates a complete production-style workflow:
 ## 🧱 Architecture
 
 ```
-GitHub → GitHub Actions → Docker Build → ECR → EKS → LoadBalancer → Users
+Developer → GitHub → GitHub Actions → Docker Build → AWS ECR → AWS EKS → LoadBalancer → Users
 ```
 
 ---
@@ -25,22 +26,22 @@ GitHub → GitHub Actions → Docker Build → ECR → EKS → LoadBalancer → 
 - Node.js + Express
 - MongoDB
 - Docker
-- Kubernetes (Minikube + EKS)
+- Kubernetes (EKS)
 - AWS ECR
 - AWS EKS
 - GitHub Actions
 
 ---
 
-## ⚙️ Features
+## ⚙️ Key Features
 
-- ✅ CI/CD pipeline (auto build & deploy)
-- ✅ Containerized application
-- ✅ Kubernetes deployment
-- ✅ Environment variable management using Secrets
-- ✅ Health checks (liveness & readiness probes)
-- ✅ Horizontal Pod Autoscaling
-- ✅ Public access via LoadBalancer
+- ✅ Automated CI/CD pipeline
+- ✅ Dockerized application
+- ✅ Kubernetes deployment with rolling updates
+- ✅ Environment variable management via Secrets
+- ✅ Liveness & Readiness probes
+- ✅ Horizontal Pod Autoscaling (CPU-based)
+- ✅ Public access using AWS LoadBalancer
 
 ---
 
@@ -51,183 +52,241 @@ GitHub → GitHub Actions → Docker Build → ECR → EKS → LoadBalancer → 
 ├── k8s/
 │   ├── deployment.yaml
 │   ├── service.yaml
+│   └── mongo.yaml
 ├── .github/workflows/
 │   └── pipeline.yml
+├── controllers/
+├── models/
+├── routes/
+├── middleware/
+├── utils/
+├── views/
+├── public/
 ├── Dockerfile
 ├── app.js
 ├── package.json
-└── .env
+├── README.md
 ```
 
 ---
 
-## 🚀 Step-by-Step Setup
+## 🔐 Environment Variables
 
-### 1️⃣ Clone Repository
+| Variable Name    | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| MONGO_URL        | MongoDB connection string used by the application  |
+| SESSION_SECRET   | Secret key used to sign session cookies            |
+| PORT             | Port on which the application runs (default: 8080) |
+| CLOUD_NAME       | Cloudinary cloud name for media storage            |
+| CLOUD_API_KEY    | Cloudinary API key                                 |
+| CLOUD_API_SECRET | Cloudinary API secret                              |
+| ADMIN_NAME       | Default admin username for seeding data            |
+| ADMIN_PASSWORD   | Default admin password                             |
+| ADMIN_EMAIL      | Default admin email                                |
 
-```bash
-git clone <your-repo-url>
-cd <project-folder>
+### Example `.env`
+
+```
+MONGO_URL=mongodb://mongo:27017/wanderlust
+SESSION_SECRET=your_secret_key
+PORT=8080
+CLOUD_NAME=your_cloud_name
+CLOUD_API_KEY=your_api_key
+CLOUD_API_SECRET=your_api_secret
+ADMIN_NAME=admin
+ADMIN_PASSWORD=admin123
+ADMIN_EMAIL=admin@example.com
 ```
 
 ---
 
-### 2️⃣ Create Kubernetes Secret
+## 🐳 Docker Setup
 
-```bash
-kubectl create secret generic app-secret --from-env-file=.env
+### Build Image
+
 ```
-
----
-
-### 3️⃣ Build & Push Docker Image (Manual)
-
-```bash
 docker build -t my-node-app .
+```
+
+---
+
+## ☁️ AWS ECR Setup
+
+### Login
+
+```
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin <ECR_URI>
+```
+
+### Push Image
+
+```
 docker tag my-node-app:latest <ECR_URI>:latest
 docker push <ECR_URI>:latest
 ```
 
 ---
 
-### 4️⃣ Deploy to Kubernetes (EKS)
+## ☸️ Kubernetes Deployment (EKS)
 
-```bash
+### Apply Configurations
+
+```
 kubectl apply -f k8s/
 ```
 
-Check:
+### Verify
 
-```bash
+```
 kubectl get pods
 kubectl get svc
 ```
 
 ---
 
-### 5️⃣ Access Application
-
-Get LoadBalancer URL:
-
-```bash
-kubectl get svc
-```
-
-Open in browser.
-
----
-
 ## 🔁 CI/CD Pipeline (GitHub Actions)
 
-Pipeline automatically:
+Pipeline automates:
 
-1. Builds Docker image
-2. Pushes to AWS ECR
-3. Updates Kubernetes deployment
+1. Build Docker image
+2. Scan image (Trivy)
+3. Push image to AWS ECR
+4. Update Kubernetes deployment
 
-### Workflow includes:
+### 🔐 GitHub Secrets Configuration
 
-```yaml
-- Build Docker Image
-- Push to ECR
-- Update EKS Deployment
+The pipeline uses GitHub Secrets for secure credentials:
+
+| Secret Name    | Purpose                           |
+| -------------- | --------------------------------- |
+| AWS_ACCESS_KEY | AWS access key for authentication |
+| AWS_SECRET_KEY | AWS secret key for authentication |
+| ECR_REPO_URI   | URI of the AWS ECR repository     |
+| SONAR_TOKEN    | Token for SonarQube analysis      |
+
+👉 Configure these in:
+
+```
+GitHub Repo → Settings → Secrets → Actions
 ```
 
 ---
 
-## ⚡ Autoscaling Setup
+## 🔄 Rolling Updates (Zero Downtime)
+
+Configured using:
+
+```
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1
+```
+
+👉 Ensures:
+
+- New pods are created before old ones are terminated
+- Application remains available during deployment
+
+---
+
+## ⚡ Autoscaling (HPA)
 
 ### Create HPA
 
-```bash
-kubectl autoscale deployment node-app --cpu=50% --min=1 --max=3
+```
+kubectl autoscale deployment node-app --cpu=50% --min=2 --max=3
 ```
 
-### Verify
+### Behavior
 
-```bash
-kubectl get hpa
-```
+- CPU < 50% → 2 pods
+- CPU > 50% → scales up to 3 pods
 
 ---
 
-## 🔥 Load Testing (to trigger scaling)
+## 🔥 Load Testing
 
-```bash
+```
 kubectl run -i --tty load-generator --rm --image=busybox -- /bin/sh
 ```
 
 Inside container:
 
-```sh
+```
 while true; do wget -q -O- http://<LOADBALANCER_URL>; done
 ```
 
-Watch scaling:
+---
 
-```bash
-kubectl get pods -w
+## 🌐 Access Application
+
+```
+kubectl get svc
 ```
 
----
-
-## 🧠 Key Concepts
-
-- HPA scales based on **CPU utilization**, not traffic directly
-- Kubernetes requires **resource requests** for autoscaling
-- Readiness probes ensure traffic is only sent to healthy pods
+Open the LoadBalancer URL in browser.
 
 ---
 
-## 💰 Cost Consideration
+## ☁️ Cloudinary Setup
 
-- EKS cluster incurs cost (~$0.10/hour)
-- EC2 node cost (~$0.02/hour)
-- LoadBalancer cost (~$0.02/hour)
+This project uses **Cloudinary** for media storage (images/uploads).
 
-👉 Delete cluster after use:
+### Required Environment Variables
 
-```bash
+```
+CLOUD_NAME
+CLOUD_API_KEY
+CLOUD_API_SECRET
+```
+
+### Setup Steps
+
+1. Create account at [https://cloudinary.com](https://cloudinary.com)
+2. Go to Dashboard
+3. Copy credentials and add to `.env`
+
+---
+
+## 🧠 Key Concepts Demonstrated
+
+- CI/CD automation
+- Containerization
+- Kubernetes orchestration
+- Rolling updates
+- Autoscaling
+- Infrastructure as Code
+
+---
+
+## 💰 Cost Management
+
+After usage, delete cluster to avoid charges:
+
+```
 eksctl delete cluster --name my-cluster --region ap-south-1
 ```
 
 ---
 
-## 🎯 Demo Flow
+## 🚀 Recreate Project
 
-1. Show running app (LoadBalancer URL)
-2. Show pods:
-
-   ```bash
-   kubectl get pods
-   ```
-
-3. Show autoscaler:
-
-   ```bash
-   kubectl get hpa
-   ```
-
-4. Generate load
-5. Show scaling (pods increasing)
-
----
-
-## 📌 Future Improvements
-
-- Use Helm charts
-- Add Ingress + domain
-- Implement Cluster Autoscaler
-- Add monitoring (Prometheus + Grafana)
+```
+git clone <repo-url>
+cd project
+kubectl apply -f k8s/
+```
 
 ---
 
 ## 👨‍💻 Author
 
-Your Name
+Subrat Dwivedi
 
 ---
 
-## ⭐ If you found this useful
+## ⭐ Support
 
-Give it a ⭐ on GitHub!
+If you found this useful, consider giving it a ⭐ on GitHub!
