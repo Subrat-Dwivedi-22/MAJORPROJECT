@@ -4,6 +4,9 @@ node_modules/
 # Environment variables (VERY IMPORTANT)
 .env
 
+#k8s backup file
+backup.yaml
+
 # Logs
 logs/
 *.log
@@ -31,8 +34,6 @@ yarn-error.log*
 .vscode/
 .idea/
 
-#k8s backup file
-backup.yaml
 
 # Temporary files
 *.tmp
