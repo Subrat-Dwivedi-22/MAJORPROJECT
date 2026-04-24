@@ -4,9 +4,17 @@ metadata:
   name: node-app
 spec:
   replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
   selector:
     matchLabels:
       app: node-app
+
   template:
     metadata:
       labels:
@@ -14,17 +22,21 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: 745241495900.dkr.ecr.ap-south-1.amazonaws.com/my-node-app
+          image: 745241495900.dkr.ecr.ap-south-1.amazonaws.com/my-node-app:<tag>
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+
           envFrom:
             - secretRef:
                 name: app-secret
+
           resources:
             requests:
               cpu: "100m"
             limits:
               cpu: "300m"
+
           readinessProbe:
             httpGet:
               path: /health
