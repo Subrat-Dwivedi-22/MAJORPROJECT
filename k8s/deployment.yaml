@@ -5,6 +5,8 @@ metadata:
 spec:
   replicas: 2
 
+  minReadySeconds: 15
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -22,7 +24,7 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: 745241495900.dkr.ecr.ap-south-1.amazonaws.com/my-node-app:<tag>
+          image: 745241495900.dkr.ecr.ap-south-1.amazonaws.com/my-node-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
