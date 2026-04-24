@@ -5,7 +5,7 @@ metadata:
 spec:
   replicas: 2
 
-  minReadySeconds: 15
+  minReadySeconds: 30
 
   strategy:
     type: RollingUpdate

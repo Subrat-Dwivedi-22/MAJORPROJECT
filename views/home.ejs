@@ -1,0 +1,178 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  /* ─── Home Hero ─── */
+  .home-hero {
+    min-height: calc(100vh - 5rem - 8rem); /* viewport minus navbar & footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #ff385c 0%, #e61e4d 50%, #bd1e59 100%);
+    border-radius: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtle decorative circles */
+  .home-hero::before,
+  .home-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+    background: #fff;
+  }
+  .home-hero::before {
+    width: 400px;
+    height: 400px;
+    top: -120px;
+    right: -100px;
+  }
+  .home-hero::after {
+    width: 300px;
+    height: 300px;
+    bottom: -80px;
+    left: -60px;
+  }
+
+  .home-hero__icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.2rem;
+    animation: homeBounce 2s ease infinite;
+  }
+
+  .home-hero__title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.6rem;
+  }
+
+  .home-hero__subtitle {
+    font-size: 1.15rem;
+    font-weight: 400;
+    opacity: 0.9;
+    max-width: 520px;
+    margin-bottom: 2.2rem;
+    line-height: 1.6;
+  }
+
+  .home-hero__btn {
+    display: inline-block;
+    padding: 0.85rem 2.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e61e4d;
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-hero__btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+    color: #bd1e59;
+  }
+
+  .home-hero__btn i {
+    margin-left: 0.5rem;
+    transition: transform 0.25s ease;
+  }
+
+  .home-hero__btn:hover i {
+    transform: translateX(4px);
+  }
+
+  /* ─── Feature cards ─── */
+  .home-features {
+    margin-bottom: 2rem;
+  }
+
+  .home-feature-card {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 1rem;
+    background: #fafafa;
+    border: 1px solid #eee;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .home-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .home-feature-card i {
+    font-size: 2rem;
+    color: #e61e4d;
+    margin-bottom: 0.8rem;
+  }
+
+  .home-feature-card h5 {
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: #222;
+  }
+
+  .home-feature-card p {
+    font-size: 0.92rem;
+    color: #717171;
+    margin: 0;
+  }
+
+  @keyframes homeBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+</style>
+
+<!-- ─── Hero Section ─── -->
+<div class="home-hero">
+  <div class="home-hero__icon">
+    <i class="fa-solid fa-house"></i>
+  </div>
+  <h1 class="home-hero__title">Welcome to Roofly</h1>
+  <p class="home-hero__subtitle">
+    Discover unique stays and unforgettable experiences around the world.
+    Your next adventure is just a click away.
+  </p>
+  <a href="/listings" class="home-hero__btn" id="home-get-started-btn">
+    Get Started <i class="fa-solid fa-arrow-right"></i>
+  </a>
+</div>
+
+<!-- ─── Feature Highlights ─── -->
+<div class="row g-4 home-features">
+  <div class="col-md-4">
+    <div class="home-feature-card">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <h5>Browse Listings</h5>
+      <p>Explore curated stays in top destinations worldwide.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="home-feature-card">
+      <i class="fa-solid fa-star"></i>
+      <h5>Trusted Reviews</h5>
+      <p>Read honest reviews from verified travellers.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="home-feature-card">
+      <i class="fa-solid fa-plus"></i>
+      <h5>Host Your Space</h5>
+      <p>List your property and start earning today.</p>
+    </div>
+  </div>
+</div>

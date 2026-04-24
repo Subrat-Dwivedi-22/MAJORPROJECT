@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("app is working");
+  res.render("home.ejs");
 });
 
 
