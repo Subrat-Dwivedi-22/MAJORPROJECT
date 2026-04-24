@@ -54,7 +54,7 @@ jobs:
       - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@v0.35.0
         with:
-          image-ref: my-node-app
+          image-ref: my-node-app:${{ github.sha }}
           format: table
           exit-code: 0
 
