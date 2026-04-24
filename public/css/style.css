@@ -1,35 +1,80 @@
+/* ─── Google Font ─── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ─── Base ─── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body{
     display:flex;
     flex-direction: column;
     min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #222;
+    background: #fafafa;
+    -webkit-font-smoothing: antialiased;
 }
 
 .container{
     flex:1;
 }
 
+/* ─── Navbar ─── */
 .navbar{
     height: 5rem;
-    background-color: white;
+    background-color: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #222 !important;
 }
 
 .fa-house{
-    color:red;
-    font-size: 2rem;
+    color: #e61e4d;
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.fa-house:hover {
+    transform: scale(1.1);
 }
 
 .nav-link{
     color:#222222 !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
+.nav-link:hover {
+    background: #f5f5f5;
+    color: #e61e4d !important;
+}
+
+/* ─── Footer ─── */
 .f-info-links a{
     text-decoration: none;
-    color : #222222;
-
+    color : #555;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
 .f-info-links a:hover{
     text-decoration: underline;
+    color: #e61e4d;
 }
 
 .f-info-links, .f-info-socials, .f-info-brand{
@@ -37,37 +82,67 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.8rem;
 }
 
-
 .f-info-socials i{
-    font-size: 1.2 rem;
-    margin-right: 1rem;
+    font-size: 1.2rem;
+    margin-right: 0.6rem;
+    color: #555;
+    transition: color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.f-info-socials i:hover {
+    color: #e61e4d;
+    transform: translateY(-2px);
 }
 
 .f-info {
     text-align: center;
-    height: 8rem;
-    background-color: #ebebeb;
+    padding: 1.5rem 1rem;
+    background-color: #f5f5f5;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: space-evenly;
+    align-items: center;
+    gap: 0.3rem;
+    border-top: 1px solid #eee;
 }
 
+.f-info-brand {
+    font-size: 0.85rem;
+    color: #717171;
+    font-weight: 500;
+}
+
+/* ─── Listing Cards ─── */
 .listing-card{
     border: none !important;
     margin-bottom: 2rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.listing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
 }
 
 .card-img-top{
     border-radius: 1rem !important;
     width: 100% !important;
     object-fit: cover !important;
+    transition: transform 0.4s ease;
+}
+
+.listing-card:hover .card-img-top {
+    transform: scale(1.03);
 }
 
 .card-body{
-    padding: 0 !important;
+    padding: 0.6rem 0 !important;
 }
 
 .card-text p{
@@ -76,36 +151,187 @@ body{
 
 .listing-link{
     text-decoration: none;
+    color: inherit;
+}
+
+.listing-link:hover {
+    color: inherit;
 }
 
 .card-img-overlay{
     opacity:0;
+    transition: opacity 0.3s ease;
+    border-radius: 1rem;
 }
 
 .card-img-overlay:hover{
-    opacity: 0.2;
+    opacity: 0.15;
     background-color: white;
 }
 
+/* ─── Listing Index ─── */
+.row h3 {
+    font-weight: 700;
+    color: #222;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ─── Show Page ─── */
+.show-img{
+    height: 35vh !important;
+    border-radius: 1rem !important;
+    object-fit: cover;
+}
+
+.show-card {
+   padding-left: 0;
+   padding-right: 0;
+   border-radius: 1rem;
+   overflow: hidden;
+   box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+.show-card .card-body {
+    padding: 1.2rem !important;
+}
+
+.show-card .card-body b {
+    font-size: 1.2rem;
+    color: #222;
+}
+
+.show-card .card-body i {
+    color: #717171;
+    font-size: 0.9rem;
+}
+
+/* ─── Buttons ─── */
 .edit-btn{
     background-color: #fe424d !important;
-    border: none !important; 
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: #e61e4d !important;
+    transform: translateY(-1px);
 }
 
 .del-btn{
-    border: none !important; 
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
 }
 
-.show-img{
-    height: 30vh !important;
+.btn-dark {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-dark:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-success {
+    background: #e61e4d !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    padding: 0.55rem 2rem !important;
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+    background: #d11841 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(230,30,77,0.3);
+}
+
+.btn-outline-dark {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-dark:hover {
+    transform: translateY(-1px);
 }
 
 .btns {
     display: flex;
 }
 
-.show-card {
-   padding-left: 0;
-   padding-right: 0; 
+/* ─── Forms ─── */
+.form-control {
+    border-radius: 10px;
+    border: 1.5px solid #ddd;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.form-control:focus {
+    border-color: #e61e4d;
+    box-shadow: 0 0 0 3px rgba(230,30,77,0.1);
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* ─── Auth Pages ─── */
+.row.mt-3 h4 {
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.2rem;
+}
+
+/* ─── Review Cards ─── */
+.row .card.col-5 {
+    border-radius: 12px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s ease;
+}
+
+.row .card.col-5:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.row .card.col-5 .card-body {
+    padding: 1rem !important;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* ─── Flash Alerts ─── */
+.alert {
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+/* ─── Responsive Tweaks ─── */
+@media (max-width: 768px) {
+    .navbar {
+        height: auto;
+        padding: 0.8rem 0;
+    }
+
+    .show-img {
+        height: 25vh !important;
+    }
+}

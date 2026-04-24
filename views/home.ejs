@@ -3,176 +3,323 @@
 <style>
   /* ─── Home Hero ─── */
   .home-hero {
-    min-height: calc(100vh - 5rem - 8rem); /* viewport minus navbar & footer */
+    min-height: 82vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 3rem 1rem;
-    background: linear-gradient(135deg, #ff385c 0%, #e61e4d 50%, #bd1e59 100%);
-    border-radius: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    padding: 4rem 1.5rem;
+    margin: -12px -12px 0 -12px;
+    background:
+      linear-gradient(160deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.55) 100%),
+      url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat;
     color: #fff;
     position: relative;
     overflow: hidden;
   }
 
-  /* subtle decorative circles */
-  .home-hero::before,
-  .home-hero::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.12;
-    background: #fff;
-  }
-  .home-hero::before {
-    width: 400px;
-    height: 400px;
-    top: -120px;
-    right: -100px;
-  }
-  .home-hero::after {
-    width: 300px;
-    height: 300px;
-    bottom: -80px;
-    left: -60px;
-  }
-
-  .home-hero__icon {
-    font-size: 3.5rem;
-    margin-bottom: 1.2rem;
-    animation: homeBounce 2s ease infinite;
+  .home-hero__badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    color: #fff;
   }
 
   .home-hero__title {
-    font-size: 3rem;
+    font-size: clamp(2.4rem, 5vw, 4rem);
     font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.6rem;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .home-hero__title span {
+    background: linear-gradient(135deg, #ff385c, #ff6b81);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .home-hero__subtitle {
     font-size: 1.15rem;
     font-weight: 400;
-    opacity: 0.9;
-    max-width: 520px;
-    margin-bottom: 2.2rem;
-    line-height: 1.6;
+    opacity: 0.92;
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.2);
   }
 
   .home-hero__btn {
-    display: inline-block;
-    padding: 0.85rem 2.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #e61e4d;
-    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.6rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ff385c, #e61e4d);
     border: none;
     border-radius: 50px;
     text-decoration: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 24px rgba(255, 56, 92, 0.4);
     position: relative;
     z-index: 1;
   }
 
   .home-hero__btn:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
-    color: #bd1e59;
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 36px rgba(255, 56, 92, 0.55);
+    color: #fff;
   }
 
   .home-hero__btn i {
-    margin-left: 0.5rem;
-    transition: transform 0.25s ease;
+    transition: transform 0.3s ease;
   }
 
   .home-hero__btn:hover i {
-    transform: translateX(4px);
+    transform: translateX(5px);
+  }
+
+  /* scroll hint */
+  .home-scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scrollBounce 2s ease infinite;
+    opacity: 0.6;
+    font-size: 1.4rem;
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ─── Stats Row ─── */
+  .home-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 2.5rem;
+  }
+
+  .home-stat {
+    text-align: center;
+  }
+
+  .home-stat__number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #e61e4d;
+    line-height: 1;
+  }
+
+  .home-stat__label {
+    font-size: 0.85rem;
+    color: #717171;
+    font-weight: 500;
+    margin-top: 0.3rem;
   }
 
   /* ─── Feature cards ─── */
   .home-features {
+    margin-bottom: 3rem;
+  }
+
+  .home-features__heading {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.4rem;
+  }
+
+  .home-features__sub {
+    text-align: center;
+    color: #717171;
     margin-bottom: 2rem;
+    font-size: 0.95rem;
   }
 
   .home-feature-card {
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 2.2rem 1.8rem;
     border-radius: 1rem;
-    background: #fafafa;
-    border: 1px solid #eee;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
   }
 
   .home-feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    border-color: transparent;
   }
 
-  .home-feature-card i {
-    font-size: 2rem;
+  .home-feature-card__icon {
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff0f3, #ffe0e6);
+    margin-bottom: 1.2rem;
+  }
+
+  .home-feature-card__icon i {
+    font-size: 1.5rem;
     color: #e61e4d;
-    margin-bottom: 0.8rem;
   }
 
   .home-feature-card h5 {
     font-weight: 700;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     color: #222;
+    font-size: 1.1rem;
   }
 
   .home-feature-card p {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     color: #717171;
     margin: 0;
+    line-height: 1.6;
   }
 
-  @keyframes homeBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+  /* ─── CTA Banner ─── */
+  .home-cta {
+    background: linear-gradient(135deg, #222 0%, #333 100%);
+    border-radius: 1.2rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 2.5rem;
+  }
+
+  .home-cta h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .home-cta p {
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .home-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #222;
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .home-cta__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+    color: #222;
   }
 </style>
 
 <!-- ─── Hero Section ─── -->
 <div class="home-hero">
-  <div class="home-hero__icon">
-    <i class="fa-solid fa-house"></i>
-  </div>
-  <h1 class="home-hero__title">Welcome to Roofly</h1>
+  <div class="home-hero__badge">✦ Your next adventure awaits</div>
+  <h1 class="home-hero__title">Find Your Perfect<br><span>Stay Anywhere</span></h1>
   <p class="home-hero__subtitle">
-    Discover unique stays and unforgettable experiences around the world.
-    Your next adventure is just a click away.
+    Discover handpicked homes, cozy apartments, and unique stays
+    in stunning destinations around the world.
   </p>
   <a href="/listings" class="home-hero__btn" id="home-get-started-btn">
-    Get Started <i class="fa-solid fa-arrow-right"></i>
+    Explore All Listings <i class="fa-solid fa-arrow-right"></i>
   </a>
+  <div class="home-scroll-hint">
+    <i class="fa-solid fa-chevron-down"></i>
+  </div>
+</div>
+
+<!-- ─── Stats ─── -->
+<div class="home-stats">
+  <div class="home-stat">
+    <div class="home-stat__number">500+</div>
+    <div class="home-stat__label">Unique Stays</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat__number">50+</div>
+    <div class="home-stat__label">Countries</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat__number">10K+</div>
+    <div class="home-stat__label">Happy Guests</div>
+  </div>
+  <div class="home-stat">
+    <div class="home-stat__number">4.8★</div>
+    <div class="home-stat__label">Avg Rating</div>
+  </div>
 </div>
 
 <!-- ─── Feature Highlights ─── -->
+<h2 class="home-features__heading">Why Choose Roofly?</h2>
+<p class="home-features__sub">Everything you need for the perfect getaway</p>
 <div class="row g-4 home-features">
   <div class="col-md-4">
     <div class="home-feature-card">
-      <i class="fa-solid fa-magnifying-glass"></i>
+      <div class="home-feature-card__icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
       <h5>Browse Listings</h5>
-      <p>Explore curated stays in top destinations worldwide.</p>
+      <p>Explore curated stays in top destinations worldwide with detailed photos and reviews.</p>
     </div>
   </div>
   <div class="col-md-4">
     <div class="home-feature-card">
-      <i class="fa-solid fa-star"></i>
+      <div class="home-feature-card__icon">
+        <i class="fa-solid fa-star"></i>
+      </div>
       <h5>Trusted Reviews</h5>
-      <p>Read honest reviews from verified travellers.</p>
+      <p>Read honest reviews from verified travellers to make confident booking decisions.</p>
     </div>
   </div>
   <div class="col-md-4">
     <div class="home-feature-card">
-      <i class="fa-solid fa-plus"></i>
+      <div class="home-feature-card__icon">
+        <i class="fa-solid fa-plus"></i>
+      </div>
       <h5>Host Your Space</h5>
-      <p>List your property and start earning today.</p>
+      <p>List your property in minutes, reach global travellers, and start earning today.</p>
     </div>
   </div>
+</div>
+
+<!-- ─── CTA Banner ─── -->
+<div class="home-cta">
+  <h3>Ready to Host Your Property?</h3>
+  <p>Join thousands of hosts and share your space with the world.</p>
+  <a href="/listings/new" class="home-cta__btn">
+    <i class="fa-solid fa-plus"></i> Create a Listing
+  </a>
 </div>
