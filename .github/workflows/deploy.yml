@@ -46,10 +46,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker Image
-        run: docker build -t my-node-app .
+        run: docker build -t my-node-app:${{ github.sha }} .
 
       - name: Tag Image
-        run: docker tag my-node-app:latest ${{ secrets.ECR_REPO_URI }}:latest
+        run: docker tag my-node-app:${{ github.sha }} ${{ secrets.ECR_REPO_URI }}:${{ github.sha }}
 
       - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@v0.35.0
@@ -59,7 +59,7 @@ jobs:
           exit-code: 0
 
       - name: Push to ECR
-        run: docker push ${{ secrets.ECR_REPO_URI }}:latest
+        run: docker push ${{ secrets.ECR_REPO_URI }}:${{ github.sha }}
 
   deploy:
     name: Deploy to EKS
@@ -79,5 +79,5 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          kubectl set image deployment/node-app node-app=${{ secrets.ECR_REPO_URI }}:latest
+          kubectl set image deployment/node-app node-app=${{ secrets.ECR_REPO_URI }}:${{ github.sha }}
           kubectl rollout status deployment/node-app
